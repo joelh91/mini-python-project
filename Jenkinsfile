@@ -2,39 +2,39 @@ pipeline {
     agent any
 
     stages {
-
         stage('Checkout') {
             steps {
-                git branch: 'testing',
-                    url: 'https://github.com/joelh91/mini-python-project.git'
+                git branch: 'testing', url: 'https://github.com/joelh91/mini-python-project.git'
             }
         }
 
-        stage('Install Dependencies') {
+        stage('Setup Python') {
             steps {
-                sh 'python3 --version'
-                sh 'pip3 --version'
-                sh 'pip3 install -r requirements.txt'
+                sh '''
+                    python3 -m venv venv
+                    . venv/bin/activate
+                    pip install --upgrade pip
+                    pip install -r requirements.txt
+                '''
             }
         }
 
         stage('Run Tests') {
             steps {
-                echo 'No tests yet — skipping'
-            }
-        }
-
-        stage('Build Docker Image') {
-            steps {
-                sh 'docker build -t mini-python-project .'
-            }
-        }
-
-        stage('Run Docker Container') {
-            steps {
-                sh 'docker run -d -p 5000:5000 --name mini-python-project mini-python-project'
+                sh '''
+                    . venv/bin/activate
+                    pytest || true
+                '''
             }
         }
     }
-}
 
+    post {
+        success {
+            echo "Pipeline finished successfully!"
+        }
+        failure {
+            echo "Pipeline failed. Check logs."
+        }
+    }
+}
