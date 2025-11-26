@@ -2,10 +2,10 @@ from flask import Flask, jsonify
 
 app = Flask(__name__)
 
-@app.route("/")
+@app.route("test/")
 def home():
     return jsonify({
-        "message": "Hello from your Dockerized Flask app!",
+        "message": "testing new route",
         "status": "running"
     })
 
