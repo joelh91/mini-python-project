@@ -2,8 +2,9 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
+        stage('Checkout SCM') {
             steps {
+                // Clone your repository
                 git branch: 'testing', url: 'https://github.com/joelh91/mini-python-project.git'
             }
         }
@@ -11,10 +12,13 @@ pipeline {
         stage('Setup Python') {
             steps {
                 sh '''
-                    python3 -m venv venv
-                    . venv/bin/activate
-                    pip install --upgrade pip
-                    pip install -r requirements.txt
+                # Create and activate virtual environment
+                python3 -m venv venv
+                . venv/bin/activate
+                # Upgrade pip
+                pip install --upgrade pip
+                # Install dependencies
+                pip install -r requirements.txt
                 '''
             }
         }
@@ -22,8 +26,27 @@ pipeline {
         stage('Run Tests') {
             steps {
                 sh '''
-                    . venv/bin/activate
-                    pytest || true
+                . venv/bin/activate
+                # Ensure pytest is installed
+                pip install pytest
+                # Run tests, fail build if any test fails
+                pytest
+                '''
+            }
+        }
+
+        stage('Build App') {
+            steps {
+                sh '''
+                echo "Build step placeholder - here you can build Docker image or package your app"
+                '''
+            }
+        }
+
+        stage('Run App') {
+            steps {
+                sh '''
+                echo "Run step placeholder - here you can start your app or run additional scripts"
                 '''
             }
         }
@@ -34,7 +57,7 @@ pipeline {
             echo "Pipeline finished successfully!"
         }
         failure {
-            echo "Pipeline failed. Check logs."
+            echo "Pipeline failed — check the logs for details."
         }
     }
 }
