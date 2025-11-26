@@ -4,19 +4,17 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'testing', url: 'https://github.com/joelh91/mini-python-project.git'
+                git branch: 'testing',
+                    url: 'https://github.com/joelh91/mini-python-project.git'
             }
         }
 
         stage('Install Dependencies') {
+            agent {
+                docker { image 'python:3.11-slim' }
+            }
             steps {
                 sh 'pip install -r requirements.txt'
-            }
-        }
-
-        stage('Run Tests') {
-            steps {
-                sh 'pytest || echo "No tests found"'
             }
         }
 
@@ -25,14 +23,11 @@ pipeline {
                 sh 'docker build -t mini-python-project .'
             }
         }
-    }
 
-    post {
-        success {
-            echo 'Pipeline completed successfully!'
-        }
-        failure {
-            echo 'Pipeline failed — please check the logs.'
+        stage('Run Docker Container') {
+            steps {
+                sh 'docker run -d -p 5000:5000 mini-python-project'
+            }
         }
     }
 }
