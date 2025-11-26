@@ -2,6 +2,7 @@ pipeline {
     agent any
 
     stages {
+
         stage('Checkout') {
             steps {
                 git branch: 'testing',
@@ -10,11 +11,16 @@ pipeline {
         }
 
         stage('Install Dependencies') {
-            agent {
-                docker { image 'python:3.11-slim' }
-            }
             steps {
-                sh 'pip install -r requirements.txt'
+                sh 'python3 --version'
+                sh 'pip3 --version'
+                sh 'pip3 install -r requirements.txt'
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                echo 'No tests yet — skipping'
             }
         }
 
@@ -26,8 +32,9 @@ pipeline {
 
         stage('Run Docker Container') {
             steps {
-                sh 'docker run -d -p 5000:5000 mini-python-project'
+                sh 'docker run -d -p 5000:5000 --name mini-python-project mini-python-project'
             }
         }
     }
 }
+
