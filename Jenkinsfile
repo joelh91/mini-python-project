@@ -18,7 +18,7 @@ pipeline {
         stage('Run Docker Container') {
             steps {
                 // Run container in detached mode using full Docker path
-                sh '/usr/local/bin/docker run -d --name mini-python-project -p 5000:5000 mini-python-3:latest'
+                sh '/usr/local/bin/docker run -d --name mini-python-joels -p 5000:5000 mini-python-3:latest'
             }
         }
     }
