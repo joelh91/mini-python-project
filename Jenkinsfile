@@ -18,7 +18,7 @@ pipeline {
         stage('Run Docker Container') {
             steps {
                 // Run container in detached mode
-                sh 'docker run -d --name mini-python-container -p 5000:5000 mini-python-app:latest'
+                sh 'docker run -d --name mini-python-app -p 5000:5000 mini-python-app:latest'
             }
         }
     }
