@@ -2,7 +2,7 @@ from flask import Flask, jsonify
 
 app = Flask(__name__)
 
-@app.route("test/")
+@app.route("/test/")
 def home():
     return jsonify({
         "message": "testing new route",
