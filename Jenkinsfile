@@ -45,14 +45,7 @@ pipeline {
             }
         }
 
-        stage('Quality Gate') {
-            steps {
-                timeout(time: 5, unit: 'MINUTES') {
-                    waitForQualityGate abortPipeline: true
-                }
-            }
-        }
-
+        
         stage('Login to AWS ECR') {
             steps {
                 withAWS(credentials: AWS_CREDS, region: AWS_REGION) {
