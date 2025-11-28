@@ -5,7 +5,7 @@ pipeline {
         SONAR_TOKEN = credentials('SONAR_TOKEN')
         AWS_REGION = "us-east-1"
         ECR_REGISTRY = "203918843788.dkr.ecr.us-east-1.amazonaws.com"
-        ECR_REPO = "mini-python"
+        ECR_REPO = "mini-python-repo"
         IMAGE_TAG = "latest"
     }
 
